@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="vue.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="app">
+        {{ message }}
+    </div>
+    ---------------<br>
+    <div id="app-2">
+        <span v-bind:title="message">
+            鼠标悬停查看动态提示信息
+        </span>
+    </div>
+    ---------------<br>
+    <div id="app-3">
+        <p v-if="canSee">根据条件你是否能看到我？</p>
+    </div>
+    ---------------<br>
+    <div id="app-4">
+        <ol>
+            <li v-for="(todo,index) in todos">
+                {{todo.task}},{{index}}
+            </li>
+        </ol>
+    </div>
+    ---------------<br>
+
+    ---------------<br>
+
+    ---------------<br>
+
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!'
+            }
+        })
+
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                message: '页面加载了，时间是：' + new Date().toLocaleString()
+            }
+        })
+
+        var app3 = new Vue({
+            el: '#app-3',
+            data: {
+                canSee: true
+            }
+        })
+
+        var app4 = new Vue({
+            el: '#app-4',
+            data: {
+                todos: [
+                    { task: 'xuexi' },
+                    { task: 'working' },
+                    { task: 'eating' }
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>
