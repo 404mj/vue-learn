@@ -74,12 +74,21 @@
                     })
                     .then(function (data) {
                         //切片。
-                        vm.posts = data.slice(0,3)
+                        vm.posts = data.slice(0, 3)
                     })
             }
         })
-
-        // 此方式是vue全局注册组件的方式，还有局部注册。
+        //----------------------------------------------------------------//
+        // 此方式是vue全局注册组件的方式，全局注册的组件必须在其使用之前声明。还有局部注册。
+        /**
+         * 组件命名风格不管是在声明的时候采用驼峰还是kebab，使用的时候都是采用kebab；
+         * 局部注册使用js声明方式。
+         * 
+         * 在模块系统使用组件：：：建议新建一个components目录。
+         * 在局部注册componentC时，由于其需要引入componentA和componentB,就import componenetA from ... 即可。
+         * 
+         * 
+         */
         Vue.component('button-counter', {
             // data必须是一个函数，否则会影响组件的通用性 ！
             data: function () {

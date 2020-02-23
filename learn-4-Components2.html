@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+</head>
+
+<body>
+    <!-- 给prop传递字符串数字Boolean数组，对象，都是可以的 -->
+
+    <!-- keep-alive 保持组件状态，切换的时候不中心加载刷新 -->
+
+    <!-- 异步组件：  -->
+
+    <!-- 使用axios访问API！ -->
+    <div id="app">
+        <h1>Bitcoin Price Index</h1>
+        <div v-for="currency in info" class="currency">
+            {{ currency.description }}:
+            <span class="lighten">
+                <span v-html="currency.symbol"></span>{{ currency.rate_float | currencydecimal }}
+            </span>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    info: null
+                }
+            },
+            mounted() {
+                axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+                    .then(res => {
+                        this.info = res
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+            filters: {
+                currencydecimal(value) {
+                    return value.toFixed(2)
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
