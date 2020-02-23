@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="vue.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="component-1">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <!-- 组件复用 -->
+    </div>
+    ---------------<br>
+    <!-- 使用prop从父组件传递数据到子组件。 -->
+    <!-- <div id="app-2">
+    </div> -->
+    ---------------<br>
+    <div id="app-3" :style="{fontSize:postFontSize + 'em'}">
+        <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post" v-on:enlarge-text="childComAction">
+        </blog-post>
+    </div>
+    ---------------<br>
+    ---------------<br>
+    ---------------<br>
+    ---------------<br>
+    <script type="text/javascript">
+        //  父组件监听子组件的事件！！！,子组件需要$emit 某个事件，父组件v-on:该事件！
+        Vue.component('blog-post', {
+            props: ['post'],
+            template: `
+                <div class="blog-post">
+                <h3>{{post.id}}. {{ post.title }}</h3>
+                <div v-html="post.content"></div>
+                <button v-on:click="$emit('enlarge-text',0.2)">Enlarge text</button>
+                </div>
+                `
+        })
+        // 离线构造数据！！！
+        // var app3 = new Vue({
+        //     el: '#app-3',
+        //     data: {
+        //         posts: [
+        //             { id: 1, title: 'my journey with vue', content: 'aaaaaaaaa' },
+        //             { id: 2, title: 'blogging with me', content: 'bbbbbbbbbbbbb' },
+        //             { id: 3, title: 'why vue is so fun', content: 'cccccccccc' }
+        //         ],
+        //         postFontSize: 1
+        //     },
+        //     methods: {
+        //         // 子组件不仅传出事件，还附带参数。在标签中使用$event访问，在下面的事件函数中直接访问。
+        //         childComAction: function (enlargeAmount) {
+        //             this.postFontSize += enlargeAmount
+        //         }
+        //     },
+        // })
+
+        //访问接口数据！！！
+        var app3 = new Vue({
+            el: '#app-3',
+            data: {
+                posts: []
+            },
+            created: function () {
+                var vm = this
+                fetch('https://jsonplaceholder.typicode.com/posts')
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+                        //切片。
+                        vm.posts = data.slice(0,3)
+                    })
+            }
+        })
+
+        // 此方式是vue全局注册组件的方式，还有局部注册。
+        Vue.component('button-counter', {
+            // data必须是一个函数，否则会影响组件的通用性 ！
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">You cliced me {{count}} times</button>'
+        })
+
+        var app = new Vue({
+            el: '#component-1'
+        })
+
+    </script>
+</body>
+
+</html>
